@@ -51,9 +51,7 @@ The model was trained on a single H100 for about 48 hours over the course of a f
 | ![Eval Loss](docs/assets/eval_loss.png) | ![Train Loss](docs/assets/train_loss.png) | ![Learning Rate](docs/assets/lr.png) |
 
 
-The loss has some really big upward spikes. If I had to guess it's because I represent each UCI move as its own token, including pawn promotion moves. 
-
-Each possible promotion move has its own token so for example `b2a1q` is a pawn promotion move but it's unlikely that the model will see them all in the training set. When the model sees an untrained promotion move, the loss will spike.
+The loss has some really big upward spikes. If I had to guess it's because there are some really rare tokens in UCI notation for pawn promotion moves. For example `b2a1q` is a pawn promotion move (black pawn goes from b2 to a1 by capturing and becomes a queen) but it's unlikely that the model will see all these cases in the training set. When the model sees an untrained promotion move, the loss will spike.
 
 I also messed up my learning rate scheduling initially, had to stop the run to fix it. Don't think it impacted the model too much but something to do better next time.
 
