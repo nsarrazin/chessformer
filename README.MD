@@ -11,6 +11,36 @@ The goal was not to achieve very good ELO performance, but to have a model based
 > [!WARNING]
 > Like all weekend projects, I didn't really document along, so I just collected my scripts after the fact. Things might or might not work, I'm happy to answer questions and provide some support on a best effort basis though!
 
+## Inference
+```py
+from transformers import GPT2LMHeadModel, AutoTokenizer
+
+model = GPT2LMHeadModel.from_pretrained("nsarrazin/chessformer").eval()
+tokenizer = AutoTokenizer.from_pretrained("nsarrazin/chessformer")
+
+moves = " ".join(["e2e4", "e7e5", "d2d4", "d7d5"])
+
+model_inputs = tokenizer(moves, return_tensors="pt")
+gen_tokens = model.generate(**model_inputs, max_new_tokens=1)[0]
+next_move = tokenizer.decode(gen_tokens[-1])
+
+print(next_move) #d4e5
+```
+
+### End of game detection
+
+The model also has three special tokens for end game detection `<BLACK_WIN>`, `<WHITE_WIN>` and `<DRAW>`. This can be useful for implementing beam search strategies. 
+
+```py
+moves = " ".join(["f2f3", "e7e5", "g2g4", "d8h4"])
+
+model_inputs = tokenizer(moves, return_tensors="pt")
+gen_tokens = model.generate(**model_inputs, max_new_tokens=1)[0]
+next_move = tokenizer.decode(gen_tokens[-1])
+
+print(next_move) # <BLACK_WIN>
+```
+
 
 ### Training run
 
