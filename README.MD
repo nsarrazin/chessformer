@@ -6,8 +6,7 @@ This is a collection of scripts that I used to train my [chessformer](https://hu
 
 It's a 231M parameter model, trained on 4.4B tokens of lichess games. The games are represented as UCI moves, with each token being a move.
 
-The goal was not to achieve very good ELO performance, but to have a model based on a well known architecture for LLMs that can then be analyzed for interpretability. See this notebook for more info.
-
+The goal was not to achieve very good ELO performance, but to have a model based on a well known architecture for LLMs that can then be analyzed for interpretability. 
 > [!WARNING]
 > Like all weekend projects, I didn't really document along, so I just collected my scripts after the fact. Things might or might not work, I'm happy to answer questions and provide some support on a best effort basis though!
 
