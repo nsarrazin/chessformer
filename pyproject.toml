@@ -1,0 +1,30 @@
+[project]
+name = "chessformer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate>=1.8.0",
+    "chess>=1.11.2",
+    "datasets>=3.6.0",
+    "ipython>=9.3.0",
+    "ipywidgets>=8.1.7",
+    "matplotlib>=3.10.3",
+    "notebook>=7.4.3",
+    "numpy>=2.3.0",
+    "pytest>=8.4.1",
+    "tokenizers>=0.21.1",
+    "torch",
+    "transformers[torch]>=4.52.3",
+    "wandb>=0.20.1",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+transformers = { git = "https://github.com/huggingface/transformers.git" }
+torch = { index = "pytorch-cu128" }
