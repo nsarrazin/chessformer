@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=1.8.0",
     "chess>=1.11.2",
     "datasets>=3.6.0",
     "ipython>=9.3.0",
@@ -14,6 +15,11 @@ dependencies = [
     "numpy>=2.3.0",
     "pytest>=8.4.1",
     "tokenizers>=0.21.1",
-    "torch>=2.7.1",
-    "transformers>=4.52.4",
+    "transformers[torch]>=4.52.4",
+    "wandb>=0.20.1",
 ]
+
+[[tool.uv.index]]
+name = "pytorch-nightly-cu128"
+url = "https://download.pytorch.org/whl/nightly/cu128"
+explicit = true
