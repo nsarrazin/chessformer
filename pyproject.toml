@@ -1,0 +1,19 @@
+[project]
+name = "chessformer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chess>=1.11.2",
+    "datasets>=3.6.0",
+    "ipython>=9.3.0",
+    "ipywidgets>=8.1.7",
+    "matplotlib>=3.10.3",
+    "notebook>=7.4.3",
+    "numpy>=2.3.0",
+    "pytest>=8.4.1",
+    "tokenizers>=0.21.1",
+    "torch>=2.7.1",
+    "transformers>=4.52.4",
+]
