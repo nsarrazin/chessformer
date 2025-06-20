@@ -24,6 +24,7 @@ tokenizer = PreTrainedTokenizerFast(tokenizer_file="model/tokenizer.json")
 if torch.cuda.is_available():
     device = torch.device("cuda")
     print(f"CUDA is available. Using GPU: {torch.cuda.get_device_name(0)}")
+    print(f"CUDA version: {torch.version.cuda}")
 else:
     device = torch.device("cpu")
     print("CUDA is not available. Aborting.")
@@ -154,7 +155,7 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0.01)
 
 
 training_args = TrainingArguments(
-    per_device_train_batch_size=64,
+    per_device_train_batch_size=1024,
     learning_rate=1e-4,
     weight_decay=0.01,
     gradient_checkpointing=True,
@@ -163,9 +164,9 @@ training_args = TrainingArguments(
     num_train_epochs=1,
     optim="adamw_torch",
     report_to="wandb",
-    eval_steps=2000,
-    save_steps=2000,
-    logging_steps=10,
+    eval_steps=360,
+    save_steps=360,
+    logging_steps=4,
     eval_strategy="steps",
     logging_strategy="steps",
     save_strategy="steps",
@@ -180,7 +181,7 @@ training_args = TrainingArguments(
     max_steps=round(
         6e8
     ),  # kind of arbitrary because we use a streaming dataset and a fixed LR
-    run_name="chessformer-2-dev",
+    run_name="chessformer-2-prod",
     dataloader_num_workers=N_CPU - 1,
 )
 scheduler = get_constant_schedule_with_warmup(

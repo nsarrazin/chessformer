@@ -15,11 +15,16 @@ dependencies = [
     "numpy>=2.3.0",
     "pytest>=8.4.1",
     "tokenizers>=0.21.1",
-    "transformers[torch]>=4.52.4",
+    "torch",
+    "transformers[torch]>=4.52.3",
     "wandb>=0.20.1",
 ]
 
 [[tool.uv.index]]
-name = "pytorch-nightly-cu128"
-url = "https://download.pytorch.org/whl/nightly/cu128"
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
 explicit = true
+
+[tool.uv.sources]
+transformers = { git = "https://github.com/huggingface/transformers.git" }
+torch = { index = "pytorch-cu128" }
