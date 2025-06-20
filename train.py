@@ -8,6 +8,7 @@ from transformers import (
 from datasets import load_dataset
 import torch
 from transformers import GPT2Config, GPT2LMHeadModel
+from .utils import add_special_tokens
 
 tokenizer = PreTrainedTokenizerFast(tokenizer_file="model/tokenizer.json")
 
@@ -32,10 +33,6 @@ model = GPT2LMHeadModel(model_config)
 print(f"Number of parameters: {sum(p.numel() for p in model.parameters())/1e6}M")
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0.01)
-
-BATCH_SIZE = 128
-
-
 dataset = load_dataset("nsarrazin/lichess-games-2023-01", split="train")
 
 # only consider games that end in checkmate
@@ -43,24 +40,6 @@ dataset = load_dataset("nsarrazin/lichess-games-2023-01", split="train")
 dataset = dataset.filter(lambda x: x["checkmate"] == True, num_proc=N_CPU)
 
 print(f"Number of games: {len(dataset)}")
-
-# add the special tokens for win/lose detection
-# these can be used for doing cool things like beam search
-# to improve performance 
-def add_special_tokens(example):
-    batch = []
-    for score, moves in zip(example["result"], example["moves"]):
-        if score == 0b10:
-            moves = moves + ["<WHITE_WIN>"]
-        elif score == 0b01:
-            moves = moves + ["<BLACK_WIN>"]
-        elif score == 0b11 or score == 0b00:
-            moves = moves + ["<DRAW>"]
-        else:
-            raise ValueError(f"Unknown score: {score}")
-        batch.append(" ".join(moves))
-    return {"moves": batch}
-
 
 dataset = dataset.map(add_special_tokens, batched=True, num_proc=N_CPU)
 
@@ -98,7 +77,7 @@ training_args = TrainingArguments(
     bf16=True,
     num_train_epochs=1,
     optim="adamw_torch",
-    report_to="wandb", # i use wandb for logging, you will need to login for it iirc
+    report_to="wandb",  # i use wandb for logging, you will need to login for it iirc
     eval_steps=1000,
     save_steps=5000,
     logging_steps=10,
@@ -108,7 +87,7 @@ training_args = TrainingArguments(
     hub_strategy="checkpoint",
     resume_from_checkpoint="last-checkpoint",
     push_to_hub=True,
-    hub_model_id="nsarrazin/chessformer", # change this to your username/model_name
+    hub_model_id="nsarrazin/chessformer",  # change this to your username/model_name
     load_best_model_at_end=True,
     metric_for_best_model="eval_loss",
     output_dir="model/chessformer",
