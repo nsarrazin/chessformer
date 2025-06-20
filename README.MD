@@ -10,6 +10,20 @@ The goal was not to achieve very good ELO performance, but to have a model based
 > [!WARNING]
 > Like all weekend projects, I didn't really document along, so I just collected my scripts after the fact. Things might or might not work, I'm happy to answer questions and provide some support on a best effort basis though!
 
+## Setup
+The environment is set up using uv, just run `uv sync`
+
+## Training
+Create a `.env` file with
+
+```
+HF_TOKEN=
+WANDB_API_KEY=
+WANDB_PROJECT=
+```
+
+filled with your own values then run `uv run --env-file=.env src/train.py`
+
 ## Inference
 ```py
 from transformers import GPT2LMHeadModel, AutoTokenizer
